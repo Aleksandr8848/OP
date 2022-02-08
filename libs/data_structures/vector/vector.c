@@ -3,19 +3,29 @@
 //
 
 #include "vector.h"
-void isBadAlloc(vector *v) {
+
+static void isBadAlloc(vector *v) {
     if (v->data == NULL) {
         fprintf(stderr, "bad alloc");
         exit(1);
-    };
+    }
 }
 
-void isEmptyVectorError(vector *v) {
+static void isEmptyVectorError(vector *v) {
     if (v->size == 0) {
         fprintf(stderr, "empty vector");
         exit(1);
-    };
+    }
 }
+
+static void isOvercomeTheLimits(vector *v, size_t index) {
+    if (index > v->size) {
+        fprintf(stderr, "IndexError: a[%llu] is not exists", index);
+        exit(1);
+    }
+
+}
+
 vector createVector(size_t n) {
     vector v = {
             malloc(sizeof(int) * n),
@@ -50,6 +60,7 @@ void shrinkToFit(vector *v) {
 void deleteVector(vector *v) {
     free(v->data);
 }
+
 bool isEmpty(vector *v) {
     return v->size == 0;
 }
@@ -64,12 +75,25 @@ int getVectorValue(vector *v, size_t i) {
 
 void pushBack(vector *v, int x) {
     if (isFull(v))
-        reserve(v, v->capacity == 0 ? 1 :v->capacity * 2);
+        reserve(v, v->capacity == 0 ? 1 : v->capacity * 2);
     v->data[v->size++] = x;
 }
 
-void popBack(vector *v){
+void popBack(vector *v) {
     if (isEmpty(v))
         isEmptyVectorError(v);
     v->size--;
+}
+
+int *atVector(vector *v, size_t index) {
+    isOvercomeTheLimits(v, index);
+    return v->data + index;
+}
+
+int *back(vector *v) {
+    return atVector(v, --v->size);
+}
+
+int* front(vector *v) {
+    return atVector(v, 0);
 }
