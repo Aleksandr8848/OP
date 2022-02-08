@@ -86,14 +86,14 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\Admin\CLionProjects\1\cmake-build-debug\CMakeFiles C:\Users\Admin\CLionProjects\1\cmake-build-debug\\CMakeFiles\progress.marks
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 all
+	cd /d C:\Users\Admin\CLionProjects\1\cmake-build-debug && $(CMAKE_COMMAND) -E cmake_progress_start C:\Users\Admin\CLionProjects\1\cmake-build-debug\CMakeFiles C:\Users\Admin\CLionProjects\1\cmake-build-debug\libs\data_structures\\CMakeFiles\progress.marks
+	cd /d C:\Users\Admin\CLionProjects\1\cmake-build-debug && $(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 libs/data_structures/all
 	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\Admin\CLionProjects\1\cmake-build-debug\CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 clean
+	cd /d C:\Users\Admin\CLionProjects\1\cmake-build-debug && $(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 libs/data_structures/clean
 .PHONY : clean
 
 # The main clean target
@@ -102,92 +102,56 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 preinstall
+	cd /d C:\Users\Admin\CLionProjects\1\cmake-build-debug && $(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 libs/data_structures/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 preinstall
+	cd /d C:\Users\Admin\CLionProjects\1\cmake-build-debug && $(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 libs/data_structures/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	$(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles\Makefile.cmake 1
+	cd /d C:\Users\Admin\CLionProjects\1\cmake-build-debug && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles\Makefile.cmake 1
 .PHONY : depend
 
-#=============================================================================
-# Target rules for targets named 1
+# Convenience name for target.
+libs/data_structures/CMakeFiles/data_structures.dir/rule:
+	cd /d C:\Users\Admin\CLionProjects\1\cmake-build-debug && $(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 libs/data_structures/CMakeFiles/data_structures.dir/rule
+.PHONY : libs/data_structures/CMakeFiles/data_structures.dir/rule
 
-# Build rule for target.
-1 : cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 1
-.PHONY : 1
-
-# fast build rule for target.
-1/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\1.dir\build.make CMakeFiles/1.dir/build
-.PHONY : 1/fast
-
-#=============================================================================
-# Target rules for targets named data_structures
-
-# Build rule for target.
-data_structures: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 data_structures
+# Convenience name for target.
+data_structures: libs/data_structures/CMakeFiles/data_structures.dir/rule
 .PHONY : data_structures
 
 # fast build rule for target.
 data_structures/fast:
-	$(MAKE) $(MAKESILENT) -f libs\data_structures\CMakeFiles\data_structures.dir\build.make libs/data_structures/CMakeFiles/data_structures.dir/build
+	cd /d C:\Users\Admin\CLionProjects\1\cmake-build-debug && $(MAKE) $(MAKESILENT) -f libs\data_structures\CMakeFiles\data_structures.dir\build.make libs/data_structures/CMakeFiles/data_structures.dir/build
 .PHONY : data_structures/fast
 
-libs/data_structures/vector/vector.obj: libs/data_structures/vector/vector.c.obj
-.PHONY : libs/data_structures/vector/vector.obj
+vector/vector.obj: vector/vector.c.obj
+.PHONY : vector/vector.obj
 
 # target to build an object file
-libs/data_structures/vector/vector.c.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\1.dir\build.make CMakeFiles/1.dir/libs/data_structures/vector/vector.c.obj
-.PHONY : libs/data_structures/vector/vector.c.obj
+vector/vector.c.obj:
+	cd /d C:\Users\Admin\CLionProjects\1\cmake-build-debug && $(MAKE) $(MAKESILENT) -f libs\data_structures\CMakeFiles\data_structures.dir\build.make libs/data_structures/CMakeFiles/data_structures.dir/vector/vector.c.obj
+.PHONY : vector/vector.c.obj
 
-libs/data_structures/vector/vector.i: libs/data_structures/vector/vector.c.i
-.PHONY : libs/data_structures/vector/vector.i
-
-# target to preprocess a source file
-libs/data_structures/vector/vector.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\1.dir\build.make CMakeFiles/1.dir/libs/data_structures/vector/vector.c.i
-.PHONY : libs/data_structures/vector/vector.c.i
-
-libs/data_structures/vector/vector.s: libs/data_structures/vector/vector.c.s
-.PHONY : libs/data_structures/vector/vector.s
-
-# target to generate assembly for a file
-libs/data_structures/vector/vector.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\1.dir\build.make CMakeFiles/1.dir/libs/data_structures/vector/vector.c.s
-.PHONY : libs/data_structures/vector/vector.c.s
-
-main.obj: main.c.obj
-.PHONY : main.obj
-
-# target to build an object file
-main.c.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\1.dir\build.make CMakeFiles/1.dir/main.c.obj
-.PHONY : main.c.obj
-
-main.i: main.c.i
-.PHONY : main.i
+vector/vector.i: vector/vector.c.i
+.PHONY : vector/vector.i
 
 # target to preprocess a source file
-main.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\1.dir\build.make CMakeFiles/1.dir/main.c.i
-.PHONY : main.c.i
+vector/vector.c.i:
+	cd /d C:\Users\Admin\CLionProjects\1\cmake-build-debug && $(MAKE) $(MAKESILENT) -f libs\data_structures\CMakeFiles\data_structures.dir\build.make libs/data_structures/CMakeFiles/data_structures.dir/vector/vector.c.i
+.PHONY : vector/vector.c.i
 
-main.s: main.c.s
-.PHONY : main.s
+vector/vector.s: vector/vector.c.s
+.PHONY : vector/vector.s
 
 # target to generate assembly for a file
-main.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\1.dir\build.make CMakeFiles/1.dir/main.c.s
-.PHONY : main.c.s
+vector/vector.c.s:
+	cd /d C:\Users\Admin\CLionProjects\1\cmake-build-debug && $(MAKE) $(MAKESILENT) -f libs\data_structures\CMakeFiles\data_structures.dir\build.make libs/data_structures/CMakeFiles/data_structures.dir/vector/vector.c.s
+.PHONY : vector/vector.c.s
 
 # Help Target
 help:
@@ -197,14 +161,10 @@ help:
 	@echo ... depend
 	@echo ... edit_cache
 	@echo ... rebuild_cache
-	@echo ... 1
 	@echo ... data_structures
-	@echo ... libs/data_structures/vector/vector.obj
-	@echo ... libs/data_structures/vector/vector.i
-	@echo ... libs/data_structures/vector/vector.s
-	@echo ... main.obj
-	@echo ... main.i
-	@echo ... main.s
+	@echo ... vector/vector.obj
+	@echo ... vector/vector.i
+	@echo ... vector/vector.s
 .PHONY : help
 
 
@@ -216,6 +176,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	$(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles\Makefile.cmake 0
+	cd /d C:\Users\Admin\CLionProjects\1\cmake-build-debug && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles\Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

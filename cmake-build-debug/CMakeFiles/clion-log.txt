@@ -1,10 +1,11 @@
 "C:\Program Files\JetBrains\CLion 2021.2.1\bin\cmake\win\bin\cmake.exe" -DCMAKE_BUILD_TYPE=Debug -DCMAKE_DEPENDS_USE_COMPILER=FALSE -G "CodeBlocks - MinGW Makefiles" C:\Users\Admin\CLionProjects\1
--- The C compiler identification is GNU 8.1.0
--- Detecting C compiler ABI info
--- Detecting C compiler ABI info - done
--- Check for working C compiler: C:/Program Files/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/gcc.exe - skipped
--- Detecting C compile features
--- Detecting C compile features - done
--- Configuring done
--- Generating done
--- Build files have been written to: C:/Users/Admin/CLionProjects/1/cmake-build-debug
+CMake Error at libs/CMakeLists.txt:1 (add_subdirectory):
+  The source directory
+
+    C:/Users/Admin/CLionProjects/1/libs/data_structures
+
+  does not contain a CMakeLists.txt file.
+
+
+-- Configuring incomplete, errors occurred!
+See also "C:/Users/Admin/CLionProjects/1/cmake-build-debug/CMakeFiles/CMakeOutput.log".
