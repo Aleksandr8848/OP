@@ -40,15 +40,16 @@ void test_atVector_requestToLastElement() {
     assert(*atVector(&v, 3) == 4);
 }
 
-void test_back_oneElementInVector(){
+void test_back_oneElementInVector() {
     vector v = (vector) {(int[]) {1}, 1, 1};
     assert(*back(&v) == 1);
 }
 
-void test_front_oneElementInVector(){
+void test_front_oneElementInVector() {
     vector v = (vector) {(int[]) {1}, 1, 1};
     assert(*front(&v) == 1);
 }
+
 void test() {
     test_pushBack_emptyVector();
     test_pushBack_fullVector();
