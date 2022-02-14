@@ -112,9 +112,11 @@
 		</Build>
 		<Unit filename="C:/Users/Admin/CLionProjects/1/libs/data_structures/matrix/matrix.c">
 			<Option target="1"/>
+			<Option target="data_structures"/>
 		</Unit>
 		<Unit filename="C:/Users/Admin/CLionProjects/1/libs/data_structures/matrix/matrix.h">
 			<Option target="1"/>
+			<Option target="data_structures"/>
 		</Unit>
 		<Unit filename="C:/Users/Admin/CLionProjects/1/libs/data_structures/vector/vector.c">
 			<Option target="1"/>

@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include "libs/data_structures/vector/vector.h"
-
+#include "libs/data_structures/matrix/matrix.h"
 void test_pushBack_emptyVector() {
     vector v = createVector(0);
     pushBack(&v, 1);
@@ -62,5 +62,8 @@ void test() {
 
 int main() {
     test();
+    matrix m = getMemMatrix(2,2);
+    inputMatrix(m);
+    outputMatrix(m);
     return 0;
 }
