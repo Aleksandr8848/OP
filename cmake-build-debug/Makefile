@@ -141,6 +141,30 @@ data_structures/fast:
 	$(MAKE) $(MAKESILENT) -f libs\data_structures\CMakeFiles\data_structures.dir\build.make libs/data_structures/CMakeFiles/data_structures.dir/build
 .PHONY : data_structures/fast
 
+libs/data_structures/matrix/matrix.obj: libs/data_structures/matrix/matrix.c.obj
+.PHONY : libs/data_structures/matrix/matrix.obj
+
+# target to build an object file
+libs/data_structures/matrix/matrix.c.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\1.dir\build.make CMakeFiles/1.dir/libs/data_structures/matrix/matrix.c.obj
+.PHONY : libs/data_structures/matrix/matrix.c.obj
+
+libs/data_structures/matrix/matrix.i: libs/data_structures/matrix/matrix.c.i
+.PHONY : libs/data_structures/matrix/matrix.i
+
+# target to preprocess a source file
+libs/data_structures/matrix/matrix.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\1.dir\build.make CMakeFiles/1.dir/libs/data_structures/matrix/matrix.c.i
+.PHONY : libs/data_structures/matrix/matrix.c.i
+
+libs/data_structures/matrix/matrix.s: libs/data_structures/matrix/matrix.c.s
+.PHONY : libs/data_structures/matrix/matrix.s
+
+# target to generate assembly for a file
+libs/data_structures/matrix/matrix.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\1.dir\build.make CMakeFiles/1.dir/libs/data_structures/matrix/matrix.c.s
+.PHONY : libs/data_structures/matrix/matrix.c.s
+
 libs/data_structures/vector/vector.obj: libs/data_structures/vector/vector.c.obj
 .PHONY : libs/data_structures/vector/vector.obj
 
@@ -199,6 +223,9 @@ help:
 	@echo ... rebuild_cache
 	@echo ... 1
 	@echo ... data_structures
+	@echo ... libs/data_structures/matrix/matrix.obj
+	@echo ... libs/data_structures/matrix/matrix.i
+	@echo ... libs/data_structures/matrix/matrix.s
 	@echo ... libs/data_structures/vector/vector.obj
 	@echo ... libs/data_structures/vector/vector.i
 	@echo ... libs/data_structures/vector/vector.s

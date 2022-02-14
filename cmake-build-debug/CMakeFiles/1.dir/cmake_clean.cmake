@@ -2,6 +2,7 @@ file(REMOVE_RECURSE
   "1.exe"
   "1.exe.manifest"
   "1.pdb"
+  "CMakeFiles/1.dir/libs/data_structures/matrix/matrix.c.obj"
   "CMakeFiles/1.dir/libs/data_structures/vector/vector.c.obj"
   "CMakeFiles/1.dir/main.c.obj"
   "lib1.dll.a"

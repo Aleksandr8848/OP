@@ -38,9 +38,10 @@ vector createVector(size_t n) {
 }
 
 void reserve(vector *v, size_t newCapacity) {
-    if (newCapacity == 0)
+    if (newCapacity == 0) {
         v->data = NULL;
-    else if (newCapacity < v->size)
+        v->size = 0;
+    } else if (newCapacity < v->size)
         v->size = newCapacity;
     else {
         realloc(v->data, sizeof(int) * newCapacity);
