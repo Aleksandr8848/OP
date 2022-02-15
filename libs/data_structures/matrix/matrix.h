@@ -99,4 +99,7 @@ matrix createMatrixFromArray(const int *a, size_t nRows,
 // в динамической памяти, построенных из элементов массива a.
 matrix *createArrayOfMatrixFromArray(const int *values,
                                      size_t nMatrices, size_t nRows, size_t nCols);
+// выводит позицию p
+void outputPosition(position p);
+
 #endif //INC_1_MATRIX_H

@@ -119,6 +119,7 @@ bool isEMatrix(matrix m) {
     return true;
 }
 
+
 bool isSymmetricMatrix(matrix m) {
     if (!isSquareMatrix(m))
         return false;
@@ -143,3 +144,54 @@ void transposeSquareMatrix(matrix m){
     }
 }
 
+position getMinValuePos(matrix m){
+    position minValuePos = {0,0};
+    for (int i = 0; i < m.nRows; ++i) {
+        for (int j = 0; j < m.nCols; ++j) {
+            position curPos = {i, j};
+            if (m.values[curPos.rowIndex][curPos.colIndex] < m.values[minValuePos.rowIndex][minValuePos.colIndex])
+                minValuePos = curPos;
+        }
+    }
+    return minValuePos;
+}
+
+position getMaxValuePos(matrix m){
+    position maxValuePos = {0,0};
+    for (int i = 0; i < m.nRows; ++i) {
+        for (int j = 0; j < m.nCols; ++j) {
+            position curPos = {i, j};
+            if (m.values[curPos.rowIndex][curPos.colIndex] > m.values[maxValuePos.rowIndex][maxValuePos.colIndex])
+                maxValuePos = curPos;
+        }
+    }
+    return maxValuePos;
+}
+
+void outputPosition(position p) {
+    printf("{%d, ", p.rowIndex);
+    printf("%d}", p.colIndex);
+}
+
+matrix createMatrixFromArray(const int *a, size_t nRows, size_t nCols) {
+    matrix m = getMemMatrix(nRows, nCols);
+
+    int k = 0;
+    for (int i = 0; i < nRows; i++)
+        for (int j = 0; j < nCols; j++)
+            m.values[i][j] = a[k++];
+
+    return m;
+}
+
+matrix *createArrayOfMatrixFromArray(const int *values, size_t nMatrices, size_t nRows, size_t nCols) {
+    matrix *ms = getMemArrayOfMatrices(nMatrices, nRows, nCols);
+
+    int l = 0;
+    for (int k = 0; k < nMatrices; k++)
+        for (int i = 0; i < nRows; i++)
+            for (int j = 0; j < nCols; j++)
+                ms[k].values[i][j] = values[l++];
+
+    return ms;
+}

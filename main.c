@@ -64,7 +64,8 @@ int main() {
     test();
     matrix m = getMemMatrix(3,3);
     inputMatrix(m);
-    printf("%d", isSymmetricMatrix(m));
+    position p = getMaxValuePos(m);
+    outputPosition(p);
 //    swapColumns(m,0,1);
 //    outputMatrix(m);
     return 0;
