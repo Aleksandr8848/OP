@@ -50,10 +50,10 @@ void outputMatrices(matrix *ms, int nMatrices);
 
 // обмен строк с порядковыми
 // номерами i1 и i2 в матрице m.
-void swapRows(matrix m, int i1, int i2);
+void swapRows(matrix m, size_t i1, size_t i2);
 
 // обмен колонок с порядковыми номерами j1 и j2 в матрице m.
-void swapColumns(matrix m, int j1, int j2);
+void swapColumns(matrix m, size_t j1, size_t j2);
 
 // выполняет сортировку вставками строк матрицы m по неубыванию
 // значения функции criteria применяемой для строк
@@ -92,14 +92,17 @@ position getMaxValuePos(matrix m);
 
 // возвращает матрицу, размера nRows на nCols, построенного из элементов массива a,
 // размещенную в динамической памяти
-matrix createMatrixFromArray(const int *a, size_t nRows,
-                             size_t nCols);
+matrix createMatrixFromArray(const int *a, int nRows,int nCols);
 
 // возвращает указатель на нулевую матрицу массива из nMatrices матриц, размещенных
 // в динамической памяти, построенных из элементов массива a.
 matrix *createArrayOfMatrixFromArray(const int *values,
-                                     size_t nMatrices, size_t nRows, size_t nCols);
+                                     int nMatrices, int nRows, int nCols);
 // выводит позицию p
 void outputPosition(position p);
+
+// возвращает матрицу, размера m1.nRows на m2.nCols, которая является результатом
+// умножения матрицы m1 на матрицу m2.
+matrix mulMatrices(matrix m1, matrix m2);
 
 #endif //INC_1_MATRIX_H

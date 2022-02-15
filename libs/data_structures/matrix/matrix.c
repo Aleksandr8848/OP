@@ -74,16 +74,16 @@ void outputMatrices(matrix *ms, int nMatrices) {
     }
 }
 
-void swapRows(matrix m, int i1, int i2) {
+void swapRows(matrix m, size_t i1, size_t i2) {
     assert(i1 < m.nRows && i2 < m.nRows);
 
     universalSwap(&m.values[i1], &m.values[i2], sizeof(int *));
 }
 
-void swapColumns(matrix m, int j1, int j2) {
+void swapColumns(matrix m, size_t j1, size_t j2) {
     assert(j1 < m.nCols && j2 < m.nCols);
 
-    for (int i = 0; i < m.nRows; ++i) {
+    for (size_t i = 0; i < m.nRows; ++i) {
         universalSwap(&m.values[i][j1], &m.values[i][j2], sizeof(int));
 
     }
@@ -135,17 +135,17 @@ bool isSymmetricMatrix(matrix m) {
     return true;
 }
 
-void transposeSquareMatrix(matrix m){
+void transposeSquareMatrix(matrix m) {
     assert(!isSquareMatrix(m));
 
     for (int i = 0; i < m.nRows; ++i) {
         for (int j = 0; j < i; ++j)
-            universalSwap(&m.values[i][j],&m.values[j][i],sizeof (int));
+            universalSwap(&m.values[i][j], &m.values[j][i], sizeof(int));
     }
 }
 
-position getMinValuePos(matrix m){
-    position minValuePos = {0,0};
+position getMinValuePos(matrix m) {
+    position minValuePos = {0, 0};
     for (int i = 0; i < m.nRows; ++i) {
         for (int j = 0; j < m.nCols; ++j) {
             position curPos = {i, j};
@@ -156,8 +156,8 @@ position getMinValuePos(matrix m){
     return minValuePos;
 }
 
-position getMaxValuePos(matrix m){
-    position maxValuePos = {0,0};
+position getMaxValuePos(matrix m) {
+    position maxValuePos = {0, 0};
     for (int i = 0; i < m.nRows; ++i) {
         for (int j = 0; j < m.nCols; ++j) {
             position curPos = {i, j};
@@ -173,7 +173,7 @@ void outputPosition(position p) {
     printf("%d}", p.colIndex);
 }
 
-matrix createMatrixFromArray(const int *a, size_t nRows, size_t nCols) {
+matrix createMatrixFromArray(const int *a, int nRows, int nCols) {
     matrix m = getMemMatrix(nRows, nCols);
 
     int k = 0;
@@ -184,7 +184,7 @@ matrix createMatrixFromArray(const int *a, size_t nRows, size_t nCols) {
     return m;
 }
 
-matrix *createArrayOfMatrixFromArray(const int *values, size_t nMatrices, size_t nRows, size_t nCols) {
+matrix *createArrayOfMatrixFromArray(const int *values, int nMatrices, int nRows, int nCols) {
     matrix *ms = getMemArrayOfMatrices(nMatrices, nRows, nCols);
 
     int l = 0;
@@ -194,4 +194,56 @@ matrix *createArrayOfMatrixFromArray(const int *values, size_t nMatrices, size_t
                 ms[k].values[i][j] = values[l++];
 
     return ms;
+}
+
+void insertionSortRowsMatrixByRowCriteria(matrix m, int (*criteria)(int *, int)) {
+    int *criteriaArray = (int *) malloc(sizeof(int) * m.nRows);
+    for (size_t i = 0; i < m.nRows; ++i)
+        criteriaArray[i] = criteria(m.values[i], m.nCols);
+
+    for (size_t i = 0; i < m.nRows; ++i) {
+        size_t maxIndex = i;
+        for (size_t j = i; j < m.nRows; j++)
+            if (criteriaArray[j] < criteriaArray[maxIndex])
+                maxIndex = j;
+
+        universalSwap(&criteriaArray[maxIndex], &criteriaArray[i], sizeof(int));
+        swapRows(m, i, maxIndex);
+    }
+}
+
+void insertionSortColsMatrixByColCriteria(matrix m, int (*criteria)(int *, int)) {
+    int *criteriaArray = (int *) malloc(sizeof(int) * m.nCols);
+    int *column = (int *) malloc(sizeof(int) * m.nRows);
+    for (size_t i = 0; i < m.nCols; ++i) {
+        for (size_t j = 0; i < m.nRows; ++i)
+            column[i] = m.values[i][j];
+
+        criteriaArray[i] = criteria(column, m.nRows);
+    }
+
+    for (size_t i = 0; i < m.nCols; ++i) {
+        size_t maxIndex = i;
+        for (size_t j = i; j < m.nCols; j++)
+            if (criteriaArray[j] > criteriaArray[maxIndex])
+                maxIndex = j;
+
+        universalSwap(&criteriaArray[maxIndex], &criteriaArray[i], sizeof(int));
+        swapColumns(m, i, maxIndex);
+    }
+}
+
+matrix mulMatrices(matrix m1, matrix m2){
+    assert(m1.nCols == m2.nRows);
+
+    matrix resMatrix = getMemMatrix(m1.nRows,m2.nCols);
+    for (int i = 0; i < m1.nRows; ++i) {
+        for (int j = 0; j < m2.nCols; ++j) {
+            resMatrix.values[i][j] = 0;
+            for (int k = 0; k < m1.nCols; ++k) {
+                resMatrix.values[i][j] += m1.values[i][k] * m2.values[k][j];
+            }
+        }
+    }
+    return resMatrix;
 }

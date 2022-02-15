@@ -62,11 +62,11 @@ void test() {
 
 int main() {
     test();
-    matrix m = getMemMatrix(3,3);
-    inputMatrix(m);
-    position p = getMaxValuePos(m);
-    outputPosition(p);
-//    swapColumns(m,0,1);
-//    outputMatrix(m);
+    matrix m1 = getMemMatrix(2,2);
+    inputMatrix(m1);
+    matrix m2 = getMemMatrix(2,2);
+    inputMatrix(m2);
+    matrix m = mulMatrices(m1,m2);
+    outputMatrix(m);
     return 0;
 }
