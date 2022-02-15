@@ -9,5 +9,4 @@ CMakeFiles/1.dir/libs/data_structures/vector/vector.c.obj: \
  ../libs/data_structures/vector/vector.h
 CMakeFiles/1.dir/main.c.obj: \
  ../libs/data_structures/matrix/matrix.h \
- ../libs/data_structures/vector/vector.h \
  ../main.c

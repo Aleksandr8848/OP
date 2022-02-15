@@ -136,7 +136,7 @@ bool isSymmetricMatrix(matrix m) {
 }
 
 void transposeSquareMatrix(matrix m) {
-    assert(!isSquareMatrix(m));
+    assert(isSquareMatrix(m));
 
     for (int i = 0; i < m.nRows; ++i) {
         for (int j = 0; j < i; ++j)
