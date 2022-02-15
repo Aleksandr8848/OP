@@ -58,9 +58,38 @@ void test_sortRowsByMinElement(){
     freeMemMatrix(x);
 }
 
+int getMin(int *a, int n){
+    int min = a[0];
+    for (int i = 0; i < n; ++i) {
+        if (a[i] < a[min])
+            min = a[i];
+    }
+    return min;
+}
+void sortColsByMinElement(matrix m){
+    insertionSortColsMatrixByColCriteria(m,getMin);
+}
+void test_sortColsByMinElement(){
+    matrix m = createMatrixFromArray((int[]) {
+            4, 5, 9,
+            6, 1, 8,
+            7, 2, 3
+    }, 3, 3);
+
+    sortColsByMinElement(m);
+    matrix x = createMatrixFromArray((int[]) {
+            5, 9, 4,
+            1, 8, 6,
+            2, 3, 7
+    }, 3, 3);
+    assert(twoMatricesEqual(m, x));
+    freeMemMatrix(m);
+    freeMemMatrix(x);
+}
 void test() {
     test_swapRowsWithMaxAndMinElements;
     test_sortRowsByMinElement;
+    test_sortColsByMinElement;
 }
 
 int main() {
