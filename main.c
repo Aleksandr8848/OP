@@ -86,10 +86,38 @@ void test_sortColsByMinElement(){
     freeMemMatrix(m);
     freeMemMatrix(x);
 }
+
+void getSquareOfMatrixIfSymmetric(matrix *m){
+    if(!isSymmetricMatrix(*m))
+        return;
+
+    matrix res = mulMatrices(*m,*m);
+    *m = res;
+}
+
+void test_getSquareOfMatrixIfSymmetric(){
+    matrix m = createMatrixFromArray((int[]) {
+            4, 3, 1,
+            3, 1, 2,
+            1, 2, 3
+    }, 3, 3);
+
+    getSquareOfMatrixIfSymmetric(&m);
+    matrix x = createMatrixFromArray((int[]) {
+            26, 17, 13,
+            17, 14, 11,
+            13, 11, 14
+    }, 3, 3);
+    assert(twoMatricesEqual(m, x));
+    freeMemMatrix(m);
+    freeMemMatrix(x);
+}
+
 void test() {
     test_swapRowsWithMaxAndMinElements;
     test_sortRowsByMinElement;
     test_sortColsByMinElement;
+    test_getSquareOfMatrixIfSymmetric;
 }
 
 int main() {
