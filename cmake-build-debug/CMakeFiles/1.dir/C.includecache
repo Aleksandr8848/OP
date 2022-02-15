@@ -6,10 +6,6 @@
 
 #IncludeRegexTransform: 
 
-C:/Users/Admin/CLionProjects/1/libs/data_structures/matrix/matrix.c
-matrix.h
-C:/Users/Admin/CLionProjects/1/libs/data_structures/matrix/matrix.h
-
 C:/Users/Admin/CLionProjects/1/libs/data_structures/matrix/matrix.h
 stdint.h
 -
