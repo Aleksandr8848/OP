@@ -62,8 +62,10 @@ void test() {
 
 int main() {
     test();
-    matrix m = getMemMatrix(2,2);
+    matrix m = getMemMatrix(3,3);
     inputMatrix(m);
-    outputMatrix(m);
+    printf("%d", isSymmetricMatrix(m));
+//    swapColumns(m,0,1);
+//    outputMatrix(m);
     return 0;
 }
