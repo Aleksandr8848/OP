@@ -25,6 +25,10 @@ stdio.h
 -
 stdint.h
 -
+stdlib.h
+-
+string.h
+-
 libs/data_structures/matrix/matrix.h
 C:/Users/Admin/CLionProjects/1/libs/data_structures/matrix/matrix.h
 
