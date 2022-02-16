@@ -93,6 +93,10 @@ void transposeIfMatrixHasNotEqualSumOfRows(matrix m)  {
 
 }
 
+// task 6
+bool isMutuallyInverseMatrices(matrix m1, matrix m2){
+    return (isEMatrix(mulMatrices(m1,m2)));
+}
 // tests
 void test_swapRowsWithMaxAndMinElements() {
     matrix m = createMatrixFromArray((int[]) {
@@ -228,11 +232,6 @@ void test_getSquareOfMatrixIfSymmetric_NotSymmetricSquareMatrix() {
     freeMemMatrix(x);
 }
 
-void test_isUnique() {
-    long long a[5] = {1, 4, 3, 3, 5};
-    assert(isUnique(a, 5));
-}
-
 void test_transposeIfMatrixHasNotEqualSumOfRows_hasEqualSum() {
     matrix m = createMatrixFromArray((int[]) {1, 2, 3,
                                               1, 4, 1,
@@ -266,8 +265,35 @@ void test_transposeIfMatrixHasNotEqualSumOfRows_hasNotEqualSum() {
     freeMemMatrix(m);
     freeMemMatrix(x);
 }
+void test_isMutuallyInverseMatrices_matrixProduceIsEMatrix() {
+    matrix m1 = createMatrixFromArray((int[]) {2, 5, 7,
+                                               6, 3, 4,
+                                               5, -2, -3}, 3, 3);
+
+    matrix m2 = createMatrixFromArray((int[]) {1, -1, 1,
+                                               -38, 41, -34,
+                                               27, -29, 24}, 3, 3);
+
+    assert(isMutuallyInverseMatrices(m1, m2));
+
+    freeMemMatrix(m1);
+    freeMemMatrix(m2);
+}
+void test_isMutuallyInverseMatrices_matrixProduceIsNotEMatrix() {
+    matrix m1 = createMatrixFromArray((int[]) {3, 5, 7,
+                                               6, 3, 4,
+                                               5, -2, -3}, 3, 3);
+
+    matrix m2 = createMatrixFromArray((int[]) {1, -1, 1,
+                                               -38, 41, -34,
+                                               27, -29, 24}, 3, 3);
+
+    assert(!isMutuallyInverseMatrices(m1, m2));
+
+    freeMemMatrix(m1);
+    freeMemMatrix(m2);
+}
 void test() {
-    test_isUnique;
     test_swapRowsWithMaxAndMinElements;
     test_sortRowsByMinElement;
     test_sortColsByMinElement;
@@ -278,6 +304,8 @@ void test() {
     test_getSquareOfMatrixIfSymmetric_NotSymmetricSquareMatrix;
     test_transposeIfMatrixHasNotEqualSumOfRows_hasEqualSum;
     test_transposeIfMatrixHasNotEqualSumOfRows_hasNotEqualSum;
+    test_isMutuallyInverseMatrices_matrixProduceIsEMatrix;
+    test_isMutuallyInverseMatrices_matrixProduceIsNotEMatrix;
 }
 
 int main() {
