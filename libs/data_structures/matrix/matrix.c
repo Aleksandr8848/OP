@@ -35,6 +35,9 @@ void freeMemMatrix(matrix m) {
     for (int i = 0; i < m.nRows; i++)
         free(m.values[i]);
     free(m.values);
+    m.values = NULL;
+    m.nRows = 0;
+    m.nCols = 0;
 }
 
 void freeMemMatrices(matrix *ms, int nMatrices) {

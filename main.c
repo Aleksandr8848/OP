@@ -83,7 +83,7 @@ long long getSum(const int *a, int n) {
     return sum;
 }
 
-void transposeIfMatrixHasNotEqualSumOfRows(matrix m)  {
+void transposeIfMatrixHasNotEqualSumOfRows(matrix m) {
     long long sumArray[m.nRows];
     for (int i = 0; i < m.nRows; ++i) {
         sumArray[i] = getSum(m.values[i], m.nCols);
@@ -94,9 +94,36 @@ void transposeIfMatrixHasNotEqualSumOfRows(matrix m)  {
 }
 
 // task 6
-bool isMutuallyInverseMatrices(matrix m1, matrix m2){
-    return (isEMatrix(mulMatrices(m1,m2)));
+bool isMutuallyInverseMatrices(matrix m1, matrix m2) {
+    return (isEMatrix(mulMatrices(m1, m2)));
 }
+
+// task 7
+
+// возвращает максимальное значение из двух целочисленных переменных типа int.
+int max2(const int a, const int b) {
+    return a > b ? a : b;
+}
+
+int getMaxValueOnDiagonal(matrix m, int rowsIndex, int colsIndex) {
+    int maxValue = m.values[rowsIndex][colsIndex];
+    while (rowsIndex < m.nRows && colsIndex < m.nCols) {
+        maxValue = max2(maxValue, m.values[rowsIndex][colsIndex]);
+        rowsIndex++;
+        colsIndex++;
+    }
+    return maxValue;
+}
+
+long long findSumOfMaxesOfPseudoDiagonal(matrix m) {
+    long long sumMaxElementsOfPseudoDiagonal = 0;
+    for (int i = 1; i < m.nRows; ++i)
+        sumMaxElementsOfPseudoDiagonal += getMaxValueOnDiagonal(m, i, 0);
+    for (int j = 1; j < m.nCols; ++j)
+        sumMaxElementsOfPseudoDiagonal += getMaxValueOnDiagonal(m, 0, j);
+    return sumMaxElementsOfPseudoDiagonal;
+}
+
 // tests
 void test_swapRowsWithMaxAndMinElements() {
     matrix m = createMatrixFromArray((int[]) {
@@ -240,8 +267,8 @@ void test_transposeIfMatrixHasNotEqualSumOfRows_hasEqualSum() {
     transposeIfMatrixHasNotEqualSumOfRows(m);
 
     matrix x = createMatrixFromArray((int[]) {1, 2, 3,
-                                                        1, 4, 1,
-                                                        3, 1, 3}, 3, 3);
+                                              1, 4, 1,
+                                              3, 1, 3}, 3, 3);
 
     assert(twoMatricesEqual(m, x));
 
@@ -257,14 +284,15 @@ void test_transposeIfMatrixHasNotEqualSumOfRows_hasNotEqualSum() {
     transposeIfMatrixHasNotEqualSumOfRows(m);
 
     matrix x = createMatrixFromArray((int[]) {7, 1, 3,
-                                                        1, 8, 1,
-                                                        1, 1, 3}, 3, 3);
+                                              1, 8, 1,
+                                              1, 1, 3}, 3, 3);
 
     assert(twoMatricesEqual(m, x));
 
     freeMemMatrix(m);
     freeMemMatrix(x);
 }
+
 void test_isMutuallyInverseMatrices_matrixProduceIsEMatrix() {
     matrix m1 = createMatrixFromArray((int[]) {2, 5, 7,
                                                6, 3, 4,
@@ -279,6 +307,7 @@ void test_isMutuallyInverseMatrices_matrixProduceIsEMatrix() {
     freeMemMatrix(m1);
     freeMemMatrix(m2);
 }
+
 void test_isMutuallyInverseMatrices_matrixProduceIsNotEMatrix() {
     matrix m1 = createMatrixFromArray((int[]) {3, 5, 7,
                                                6, 3, 4,
@@ -293,6 +322,17 @@ void test_isMutuallyInverseMatrices_matrixProduceIsNotEMatrix() {
     freeMemMatrix(m1);
     freeMemMatrix(m2);
 }
+
+void test_findSumOfMaxesOfPseudoDiagonal() {
+    matrix m = createMatrixFromArray((int[]) {3, 2, 5, 4,
+                                              1, 3, 6, 3,
+                                              3, 2, 1, 2}, 3, 4);
+
+    assert(findSumOfMaxesOfPseudoDiagonal(m) == 20);
+
+    freeMemMatrix(m);
+}
+
 void test() {
     test_swapRowsWithMaxAndMinElements;
     test_sortRowsByMinElement;
@@ -306,6 +346,7 @@ void test() {
     test_transposeIfMatrixHasNotEqualSumOfRows_hasNotEqualSum;
     test_isMutuallyInverseMatrices_matrixProduceIsEMatrix;
     test_isMutuallyInverseMatrices_matrixProduceIsNotEMatrix;
+    test_findSumOfMaxesOfPseudoDiagonal;
 }
 
 int main() {
