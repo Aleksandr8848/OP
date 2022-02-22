@@ -3,6 +3,7 @@
 #include <string.h>
 #include "libs/data_structures/matrix/matrix.h"
 #include <math.h>
+
 // task 1
 void swapRowsWithMaxAndMinElements(matrix m) {
     position maxPos = getMaxValuePos(m);
@@ -49,9 +50,9 @@ void getSquareOfMatrixIfSymmetric(matrix *m) {
 }
 
 // task 5
-int compare_ints(const void *a, const void *b) {
-    int arg1 = *(const int *) a;
-    int arg2 = *(const int *) b;
+int long_long_cmp(const void *a, const void *b) {
+    long long arg1 = *(const long long *) a;
+    long long arg2 = *(const long long *) b;
 
 
     if (arg1 < arg2) return -1;
@@ -59,19 +60,19 @@ int compare_ints(const void *a, const void *b) {
     return 0;
 }
 
-bool isUnique(long long *a, int n) {
-    bool isUnique = true;
+bool isUnique(long long *a, const int n) {
+    long long *aCopy = (long long *) malloc(n * sizeof(long long));
+    memcpy(aCopy, a, n * sizeof(long long));
+    qsort(aCopy, n, sizeof(long long), long_long_cmp);
 
-    qsort(a, n, sizeof(int), compare_ints);
-
-    int i = 0;
-    while (i < n - 1 && isUnique) {
-        if (a[i] == a[i + 1])
-            isUnique = 0;
-        i++;
+    for (int i = 0; i < n - 1; ++i) {
+        if (aCopy[i] == aCopy[i + 1]) {
+            free(aCopy);
+            return false;
+        }
     }
-
-    return isUnique;
+    free(aCopy);
+    return true;
 }
 
 long long getSum(const int *a, int n) {
@@ -138,19 +139,20 @@ int getMinInArea(matrix m) {
         right = right > m.nCols ? right : right + 1;
         left = left > 0 ? left - 1 : left;
 
-        minElement = min2(getMin(&m.values[i][left],right-left),minElement);
+        minElement = min2(getMin(&m.values[i][left], right - left), minElement);
     }
     return minElement;
 }
 
 // task 9
 
-float getDistance(int *a,int n){
+float getDistance(int *a, int n) {
     double sum = 0;
     for (int i = 0; i < n; ++i)
-        sum += pow(a[i],2);
-     return sqrt(sum);
+        sum += pow(a[i], 2);
+    return sqrt(sum);
 }
+
 void insertionSortRowsMatrixByRowCriteriaF(matrix m, float (*criteria)(int *, int)) {
     float *criteriaArray = (float *) malloc(sizeof(int) * m.nRows);
     for (size_t i = 0; i < m.nRows; ++i)
@@ -167,11 +169,199 @@ void insertionSortRowsMatrixByRowCriteriaF(matrix m, float (*criteria)(int *, in
     }
 }
 
-void sortByDistances(matrix m){
+void sortByDistances(matrix m) {
     insertionSortRowsMatrixByRowCriteriaF(m, getDistance);
 }
 
+// task 10
+int countNUnique(long long *a, const int n) {
+    if (n == 0)
+        return 0;
+
+    long long *aCopy = (long long *) malloc(n * sizeof(long long));
+    memcpy(aCopy, a, n * sizeof(long long));
+    qsort(aCopy, n, sizeof(long long), long_long_cmp);
+
+    int countNUnique = 1;
+    for (int i = 0; i < n - 1; ++i) {
+        if (aCopy[i] != aCopy[i + 1]) {
+            countNUnique++;
+        }
+    }
+    free(aCopy);
+    return countNUnique;
+}
+
+int countEqClassesByRowsSum(matrix m) {
+    long long *arrayOfSums = (long long *) malloc(sizeof(long long) * m.nRows);
+
+    for (int i = 0; i < m.nRows; ++i)
+        arrayOfSums[i] = getSum(m.values[i], m.nCols);
+    int classes = countNUnique(arrayOfSums, m.nRows);
+
+    free(arrayOfSums);
+
+    return classes;
+}
+
 // tests
+void test_swapRows() {
+    matrix m1 = createMatrixFromArray((int[]) {1, 4, 5,
+                                               3, 6, 7,
+                                               4, 7, 2}, 3, 3);
+
+
+    swapRows(m1, 1, 2);
+
+    matrix m2 = createMatrixFromArray((int[]) {1, 4, 5,
+                                               4, 7, 2,
+                                               3, 6, 7}, 3, 3);
+
+    assert(twoMatricesEqual(m1, m2));
+
+    freeMemMatrix(m1);
+    freeMemMatrix(m2);
+}
+
+void test_swapColumns() {
+    matrix m1 = createMatrixFromArray((int[]) {1, 4, 5,
+                                               3, 6, 7,
+                                               4, 7, 2}, 3, 3);
+
+    swapColumns(m1, 0, 2);
+
+    matrix m2 = createMatrixFromArray((int[]) {5, 4, 1,
+                                               7, 6, 3,
+                                               2, 7, 4}, 3, 3);
+
+    assert(twoMatricesEqual(m1, m2));
+
+    freeMemMatrix(m1);
+    freeMemMatrix(m2);
+}
+
+void test_isSquareMatrix() {
+    matrix m = createMatrixFromArray((int[]) {1, 2, 3,
+                                              4, 5, 6,
+                                              7, 8, 9}, 3, 3);
+
+    assert(isSquareMatrix(m));
+
+    freeMemMatrix(m);
+}
+
+void test_twoMatricesEqual() {
+    matrix m1 = createMatrixFromArray((int[]) {1, 7, 5,
+                                               3, 6, 9,
+                                               4, 8, 2}, 3, 3);
+    matrix m2 = createMatrixFromArray((int[]) {1, 7, 5,
+                                               3, 6, 9,
+                                               4, 8, 2}, 3, 3);
+    assert(twoMatricesEqual(m1, m2));
+
+    freeMemMatrix(m1);
+    freeMemMatrix(m2);
+}
+
+void test_isEMatrix_matrixIsE() {
+    matrix m = createMatrixFromArray((int[]) {1, 0, 0,
+                                              0, 1, 0,
+                                              0, 0, 1}, 3, 3);
+
+    assert(isEMatrix(m));
+
+    freeMemMatrix(m);
+}
+
+void test_isEMatrix_matrixIsNotE() {
+    matrix m = createMatrixFromArray((int[]) {1, 0, 0,
+                                              0, 2, 0,
+                                              0, 0, 3}, 3, 3);
+    assert(!isEMatrix(m));
+
+    freeMemMatrix(m);
+}
+
+void test_isEMatrix_matrixIsNotSquare() {
+    matrix m = createMatrixFromArray((int[]) {1, 0, 0,
+                                              0, 1, 0}, 2, 3);
+
+    assert(!isEMatrix(m));
+
+    freeMemMatrix(m);
+}
+
+void test_isEMatrix() {
+    test_isEMatrix_matrixIsE();
+    test_isEMatrix_matrixIsNotE();
+    test_isEMatrix_matrixIsNotSquare();
+}
+
+void test_isSymmetricMatrix_matrixIsSymmetric() {
+    matrix m = createMatrixFromArray((int[]) {1, 2, 3,
+                                              2, 5, 6,
+                                              3, 6, 7}, 3, 3);
+
+    assert(isSymmetricMatrix(m));
+
+    freeMemMatrix(m);
+}
+
+void test_isSymmetricMatrix_matrixIsNotSymmetric() {
+    matrix m = createMatrixFromArray((int[]) {1, 2, 3,
+                                              4, 5, 6,
+                                              7, 8, 9}, 3, 3);
+    assert(!isSymmetricMatrix(m));
+
+    freeMemMatrix(m);
+}
+
+void test_isSymmetricMatrix_matrixIsNotSquare() {
+    matrix m = createMatrixFromArray((int[]) {1, 2, 3,
+                                              4, 5, 6}, 2, 3);
+
+    assert(!isSymmetricMatrix(m));
+
+    freeMemMatrix(m);
+}
+
+void test_isSymmetricMatrix() {
+    test_isSymmetricMatrix_matrixIsSymmetric();
+    test_isSymmetricMatrix_matrixIsNotSymmetric();
+    test_isSymmetricMatrix_matrixIsNotSquare();
+}
+
+void test_transposeSquareMatrix_matrixIsSquare() {
+    matrix m1 = createMatrixFromArray((int[]) {1, 2, 3,
+                                               4, 5, 6,
+                                               7, 8, 9}, 3, 3);
+    matrix m2 = createMatrixFromArray((int[]) {1, 4, 7,
+                                               2, 5, 8,
+                                               3, 6, 9}, 3, 3);
+    transposeSquareMatrix(m1);
+
+    assert(twoMatricesEqual(m1, m2));
+
+    freeMemMatrix(m1);
+    freeMemMatrix(m2);
+}
+
+void test_transposeSquareMatrix() {
+    test_transposeSquareMatrix_matrixIsSquare();
+}
+
+
+void test_part1() {
+    test_swapRows();
+    test_swapColumns();
+    test_isSquareMatrix();
+    test_twoMatricesEqual();
+    test_isEMatrix();
+    test_isSymmetricMatrix();
+    test_transposeSquareMatrix();
+
+}
+
 void test_swapRowsWithMaxAndMinElements() {
     matrix m = createMatrixFromArray((int[]) {
             1, 2, 3,
@@ -380,7 +570,7 @@ void test_findSumOfMaxesOfPseudoDiagonal() {
     freeMemMatrix(m);
 }
 
-void test_getMinInArea1(){
+void test_getMinInArea1() {
     matrix m = createMatrixFromArray((int[]) {3, 2, 5, 4,
                                               1, 3, 6, 3,
                                               3, 2, 1, 2}, 3, 4);
@@ -388,7 +578,7 @@ void test_getMinInArea1(){
     freeMemMatrix(m);
 }
 
-void test_getMinInArea2(){
+void test_getMinInArea2() {
     matrix m = createMatrixFromArray((int[]) {10, 7, 5, 6,
                                               3, 11, 8, 9,
                                               3, 2, 12, 2}, 3, 4);
@@ -396,13 +586,14 @@ void test_getMinInArea2(){
     freeMemMatrix(m);
 }
 
-void test_getMinInArea3(){
+void test_getMinInArea3() {
     matrix m = createMatrixFromArray((int[]) {10, 17, 5, 6,
                                               3, 11, 8, 9,
                                               3, 2, 12, 2}, 3, 4);
     assert(getMinInArea(m) == 17);
     freeMemMatrix(m);
 }
+
 void test_sortByDistances_somePoints() {
     matrix m = createMatrixFromArray((int[]) {6, 8, 9, 2,
                                               10, 11, 5, 1,
@@ -456,29 +647,70 @@ void test_sortByDistances_oneCols() {
     freeMemMatrix(m);
     freeMemMatrix(expectation);
 }
-void test_getSquareOfMatrixIfSymmetric(){
+
+void test_countEqClassesByRowsSum1() {
+    matrix m = createMatrixFromArray((int[]) {7, 1,
+                                              2, 7,
+                                              5, 4,
+                                              4, 3,
+                                              1, 6,
+                                              8, 0}, 6, 2);
+    assert(countEqClassesByRowsSum(m) == 3);
+    freeMemMatrix(m);
+}
+
+void test_countEqClassesByRowsSum_oneCols() {
+    matrix m = createMatrixFromArray((int[]) {7,
+                                              2,
+                                              5,
+                                              4,
+                                              1,
+                                              1}, 6, 1);
+    assert(countEqClassesByRowsSum(m) == 5);
+    freeMemMatrix(m);
+}
+
+void test_countEqClassesByRowsSum_void() {
+    matrix m = createMatrixFromArray((int[]) {}, 0, 0);
+    assert(countEqClassesByRowsSum(m) == 0);
+
+    freeMemMatrix(m);
+}
+
+void test_countEqClassesByRowsSum() {
+    test_countEqClassesByRowsSum_oneCols;
+    test_countEqClassesByRowsSum_void;
+    test_countEqClassesByRowsSum1;
+}
+
+void test_getSquareOfMatrixIfSymmetric() {
     test_getSquareOfMatrixIfSymmetric_symmetricSquareMatrix;
     test_getSquareOfMatrixIfSymmetric_oneElem;
     test_getSquareOfMatrixIfSymmetric_NotSymmetricSquareMatrix;
 }
-void test_swapRowsOrCols(){
+
+void test_swapRowsOrCols() {
     test_swapRowsWithMaxAndMinElements;
     test_sortRowsByMinElement;
     test_sortColsByMinElement;
     test_sortRowsByMinElement_oneCol;
     test_sortColsByMinElement_oneRow;
 }
-void test_getMinInArea(){
+
+void test_getMinInArea() {
     test_getMinInArea1;
     test_getMinInArea2;
     test_getMinInArea3;
 }
-void test_sortByDistances(){
+
+void test_sortByDistances() {
     test_sortByDistances_somePoints;
     test_sortByDistances_somePoints2;
     test_sortByDistances_oneCols;
 }
+
 void test() {
+    test_part1;
     test_swapRowsOrCols;
     test_getSquareOfMatrixIfSymmetric;
     test_transposeIfMatrixHasNotEqualSumOfRows_hasEqualSum;
@@ -488,6 +720,7 @@ void test() {
     test_findSumOfMaxesOfPseudoDiagonal;
     test_getMinInArea;
     test_sortByDistances;
+    test_countEqClassesByRowsSum;
 }
 
 int main() {

@@ -204,7 +204,7 @@ void insertionSortRowsMatrixByRowCriteria(matrix m, int (*criteria)(int *, int))
     for (int i = 1; i < m.nRows; ++i) {
         int j = i;
         while (j > 0 && criteriaArray[j - 1] > criteriaArray[j]) {
-            universalSwap(&criteriaArray[j - 1], &criteriaArray[j],sizeof(int));
+            universalSwap(&criteriaArray[j - 1], &criteriaArray[j], sizeof(int));
             swapRows(m, j - 1, j);
 
             j--;
@@ -226,7 +226,7 @@ void insertionSortColsMatrixByColCriteria(matrix m, int (*criteria)(int *, int))
     for (int i = 1; i < m.nCols; ++i) {
         int j = i;
         while (j > 0 && criteriaArray[j - 1] > criteriaArray[j]) {
-            universalSwap(&criteriaArray[j - 1], &criteriaArray[j],sizeof(int));
+            universalSwap(&criteriaArray[j - 1], &criteriaArray[j], sizeof(int));
             swapColumns(m, j - 1, j);
 
             j--;
@@ -247,4 +247,16 @@ matrix mulMatrices(matrix m1, matrix m2) {
         }
     }
     return resMatrix;
+}
+
+void universalSwap(void *a, void *b, size_t size) {
+    char *pa = a;
+    char *pb = b;
+    for (int i = 0; i < size; ++i) {
+        char t = *pa;
+        *pa = *pb;
+        *pb = t;
+        pa++;
+        pb++;
+    }
 }
