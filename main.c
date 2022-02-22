@@ -221,6 +221,33 @@ int getSpecialElements(matrix m) {
     return countSpecialElements;
 }
 
+// task 12
+position getLeftMin(matrix m) {
+    position minValuePos = {0, 0};
+    for (int i = 0; i < m.nRows; ++i) {
+        for (int j = 0; j < m.nCols; ++j) {
+            position curPos = {i, j};
+            if (m.values[i][j] < m.values[minValuePos.rowIndex][minValuePos.colIndex] ||
+                m.values[i][j] == m.values[minValuePos.rowIndex][minValuePos.colIndex] && j < minValuePos.colIndex)
+                minValuePos = curPos;
+        }
+    }
+    return minValuePos;
+}
+
+void swapPenultimateRow(matrix m) {
+    position minPos = getLeftMin(m);
+
+    int *col = (int *) malloc(sizeof(int) * m.nRows);
+
+    for (int i = 0; i < m.nRows; ++i)
+        col[i] = m.values[i][minPos.colIndex];
+
+    memcpy(m.values[m.nRows - 2], col, sizeof(int) * m.nCols);
+
+    free(col);
+}
+
 // tests
 void test_swapRows() {
     matrix m1 = createMatrixFromArray((int[]) {1, 4, 5,
@@ -734,6 +761,26 @@ void test_getSpecialElements() {
     freeMemMatrix(m);
 }
 
+void test_swapPenultimateRow(){
+    matrix m = createMatrixFromArray((int[]) {
+            4, 7, 1,
+            3, 1, 2,
+            5, 2, 3
+    }, 3, 3);
+
+    swapPenultimateRow(m);
+
+    matrix x = createMatrixFromArray((int[]) {
+            4, 3, 1,
+            7, 1, 2,
+            5, 2, 3
+    }, 3, 3);
+
+    assert(twoMatricesEqual(m,x));
+
+    freeMemMatrix(m);
+    freeMemMatrix(x);
+}
 void test() {
     test_part1;
     test_swapRowsOrCols;
@@ -747,6 +794,7 @@ void test() {
     test_sortByDistances;
     test_countEqClassesByRowsSum;
     test_getSpecialElements;
+    test_swapPenultimateRow;
 }
 
 int main() {
