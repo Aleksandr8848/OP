@@ -204,6 +204,23 @@ int countEqClassesByRowsSum(matrix m) {
     return classes;
 }
 
+// task 11
+int getSpecialElements(matrix m) {
+    int countSpecialElements = 0;
+
+    for (int i = 0; i < m.nCols; ++i) {
+        long long sumCols = 0;
+        for (int j = 0; j < m.nRows; ++j)
+            sumCols += m.values[i][j];
+
+        for (int j = 0; j < m.nRows; ++j) {
+            if (sumCols - m.values[i][j] < m.values[i][j])
+                countSpecialElements++;
+        }
+    }
+    return countSpecialElements;
+}
+
 // tests
 void test_swapRows() {
     matrix m1 = createMatrixFromArray((int[]) {1, 4, 5,
@@ -709,6 +726,14 @@ void test_sortByDistances() {
     test_sortByDistances_oneCols;
 }
 
+void test_getSpecialElements() {
+    matrix m = createMatrixFromArray((int[]) {3, 5, 5, 4,
+                                              2, 3, 6, 7,
+                                              12, 2, 1, 2}, 3, 4);
+    assert(getSpecialElements(m) == 2);
+    freeMemMatrix(m);
+}
+
 void test() {
     test_part1;
     test_swapRowsOrCols;
@@ -721,6 +746,7 @@ void test() {
     test_getMinInArea;
     test_sortByDistances;
     test_countEqClassesByRowsSum;
+    test_getSpecialElements;
 }
 
 int main() {
