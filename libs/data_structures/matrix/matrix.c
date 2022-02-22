@@ -4,17 +4,6 @@
 
 #include "matrix.h"
 
-static void universalSwap(void *a, void *b, size_t size) {
-    char *pa = a;
-    char *pb = b;
-    for (int i = 0; i < size; ++i) {
-        char t = *pa;
-        *pa = *pb;
-        *pb = t;
-        pa++;
-        pb++;
-    }
-}
 
 matrix getMemMatrix(int nRows, int nCols) {
     int **values = (int **) malloc(sizeof(int *) * nRows);
@@ -212,35 +201,36 @@ void insertionSortRowsMatrixByRowCriteria(matrix m, int (*criteria)(int *, int))
     for (size_t i = 0; i < m.nRows; ++i)
         criteriaArray[i] = criteria(m.values[i], m.nCols);
 
-    for (size_t i = 0; i < m.nRows; ++i) {
-        size_t maxIndex = i;
-        for (size_t j = i; j < m.nRows; j++)
-            if (criteriaArray[j] < criteriaArray[maxIndex])
-                maxIndex = j;
+    for (int i = 1; i < m.nRows; ++i) {
+        int j = i;
+        while (j > 0 && criteriaArray[j - 1] > criteriaArray[j]) {
+            universalSwap(&criteriaArray[j - 1], &criteriaArray[j],sizeof(int));
+            swapRows(m, j - 1, j);
 
-        universalSwap(&criteriaArray[maxIndex], &criteriaArray[i], sizeof(int));
-        swapRows(m, i, maxIndex);
+            j--;
+        }
     }
 }
 
+
 void insertionSortColsMatrixByColCriteria(matrix m, int (*criteria)(int *, int)) {
     int *criteriaArray = (int *) malloc(sizeof(int) * m.nCols);
-    int *column = (int *) malloc(sizeof(int) * m.nRows);
     for (size_t i = 0; i < m.nCols; ++i) {
-        for (size_t j = 0; i < m.nRows; ++i)
-            column[i] = m.values[i][j];
+        int arrayForRow[m.nRows];
+        for (size_t j = 0; j < m.nRows; ++j)
+            arrayForRow[j] = m.values[i][j];
 
-        criteriaArray[i] = criteria(column, m.nRows);
+        criteriaArray[i] = criteria(arrayForRow, m.nRows);
     }
 
-    for (size_t i = 0; i < m.nCols; ++i) {
-        size_t maxIndex = i;
-        for (size_t j = i; j < m.nCols; j++)
-            if (criteriaArray[j] > criteriaArray[maxIndex])
-                maxIndex = j;
+    for (int i = 1; i < m.nCols; ++i) {
+        int j = i;
+        while (j > 0 && criteriaArray[j - 1] > criteriaArray[j]) {
+            universalSwap(&criteriaArray[j - 1], &criteriaArray[j],sizeof(int));
+            swapColumns(m, j - 1, j);
 
-        universalSwap(&criteriaArray[maxIndex], &criteriaArray[i], sizeof(int));
-        swapColumns(m, i, maxIndex);
+            j--;
+        }
     }
 }
 

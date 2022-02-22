@@ -1,8 +1,8 @@
-
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "libs/data_structures/matrix/matrix.h"
-
+#include <math.h>
 // task 1
 void swapRowsWithMaxAndMinElements(matrix m) {
     position maxPos = getMaxValuePos(m);
@@ -143,6 +143,34 @@ int getMinInArea(matrix m) {
     return minElement;
 }
 
+// task 9
+
+float getDistance(int *a,int n){
+    double sum = 0;
+    for (int i = 0; i < n; ++i)
+        sum += pow(a[i],2);
+     return sqrt(sum);
+}
+void insertionSortRowsMatrixByRowCriteriaF(matrix m, float (*criteria)(int *, int)) {
+    float *criteriaArray = (float *) malloc(sizeof(int) * m.nRows);
+    for (size_t i = 0; i < m.nRows; ++i)
+        criteriaArray[i] = criteria(m.values[i], m.nCols);
+
+    for (int i = 1; i < m.nRows; ++i) {
+        int j = i;
+        while (j > 0 && criteriaArray[j - 1] > criteriaArray[j]) {
+            universalSwap(&criteriaArray[j - 1], &criteriaArray[j], sizeof(float));
+            swapRows(m, j - 1, j);
+
+            j--;
+        }
+    }
+}
+
+void sortByDistances(matrix m){
+    insertionSortRowsMatrixByRowCriteriaF(m, getDistance);
+}
+
 // tests
 void test_swapRowsWithMaxAndMinElements() {
     matrix m = createMatrixFromArray((int[]) {
@@ -230,7 +258,7 @@ void test_sortColsByMinElement_oneRow() {
     freeMemMatrix(x);
 }
 
-void test_getSquareOfMatrixIfSymmetric() {
+void test_getSquareOfMatrixIfSymmetric_symmetricSquareMatrix() {
     matrix m = createMatrixFromArray((int[]) {
             4, 3, 1,
             3, 1, 2,
@@ -352,7 +380,7 @@ void test_findSumOfMaxesOfPseudoDiagonal() {
     freeMemMatrix(m);
 }
 
-void test_getMinInArea(){
+void test_getMinInArea1(){
     matrix m = createMatrixFromArray((int[]) {3, 2, 5, 4,
                                               1, 3, 6, 3,
                                               3, 2, 1, 2}, 3, 4);
@@ -375,23 +403,91 @@ void test_getMinInArea3(){
     assert(getMinInArea(m) == 17);
     freeMemMatrix(m);
 }
-void test() {
+void test_sortByDistances_somePoints() {
+    matrix m = createMatrixFromArray((int[]) {6, 8, 9, 2,
+                                              10, 11, 5, 1,
+                                              7, 12, 3, 4}, 3, 4);
+
+    sortByDistances(m);
+
+    matrix expectation = createMatrixFromArray((int[]) {6, 8, 9, 2,
+                                                        7, 12, 3, 4,
+                                                        10, 11, 5, 1}, 3, 4);
+
+    assert(twoMatricesEqual(m, expectation));
+
+    freeMemMatrix(m);
+    freeMemMatrix(expectation);
+}
+
+void test_sortByDistances_somePoints2() {
+    matrix m = createMatrixFromArray((int[]) {8, 9, 10, 11,
+                                              0, 1, 2, 3,
+                                              4, 5, 6, 7}, 3, 4);
+
+    sortByDistances(m);
+
+    matrix expectation = createMatrixFromArray((int[]) {0, 1, 2, 3,
+                                                        4, 5, 6, 7,
+                                                        8, 9, 10, 11,}, 3, 4);
+
+    assert(twoMatricesEqual(m, expectation));
+
+    freeMemMatrix(m);
+    freeMemMatrix(expectation);
+}
+
+
+void test_sortByDistances_oneCols() {
+    matrix m = createMatrixFromArray((int[]) {11,
+                                              9,
+                                              10,
+                                              2}, 4, 1);
+
+    sortByDistances(m);
+
+    matrix expectation = createMatrixFromArray((int[]) {2,
+                                                        9,
+                                                        10,
+                                                        11}, 4, 1);
+
+    assert(twoMatricesEqual(m, expectation));
+
+    freeMemMatrix(m);
+    freeMemMatrix(expectation);
+}
+void test_getSquareOfMatrixIfSymmetric(){
+    test_getSquareOfMatrixIfSymmetric_symmetricSquareMatrix;
+    test_getSquareOfMatrixIfSymmetric_oneElem;
+    test_getSquareOfMatrixIfSymmetric_NotSymmetricSquareMatrix;
+}
+void test_swapRowsOrCols(){
     test_swapRowsWithMaxAndMinElements;
     test_sortRowsByMinElement;
     test_sortColsByMinElement;
     test_sortRowsByMinElement_oneCol;
     test_sortColsByMinElement_oneRow;
+}
+void test_getMinInArea(){
+    test_getMinInArea1;
+    test_getMinInArea2;
+    test_getMinInArea3;
+}
+void test_sortByDistances(){
+    test_sortByDistances_somePoints;
+    test_sortByDistances_somePoints2;
+    test_sortByDistances_oneCols;
+}
+void test() {
+    test_swapRowsOrCols;
     test_getSquareOfMatrixIfSymmetric;
-    test_getSquareOfMatrixIfSymmetric_oneElem;
-    test_getSquareOfMatrixIfSymmetric_NotSymmetricSquareMatrix;
     test_transposeIfMatrixHasNotEqualSumOfRows_hasEqualSum;
     test_transposeIfMatrixHasNotEqualSumOfRows_hasNotEqualSum;
     test_isMutuallyInverseMatrices_matrixProduceIsEMatrix;
     test_isMutuallyInverseMatrices_matrixProduceIsNotEMatrix;
     test_findSumOfMaxesOfPseudoDiagonal;
     test_getMinInArea;
-    test_getMinInArea2;
-    test_getMinInArea3;
+    test_sortByDistances;
 }
 
 int main() {

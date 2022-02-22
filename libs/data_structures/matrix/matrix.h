@@ -107,4 +107,16 @@ void outputPosition(position p);
 // умножения матрицы m1 на матрицу m2.
 matrix mulMatrices(matrix m1, matrix m2);
 
+static void universalSwap(void *a, void *b, size_t size) {
+    char *pa = a;
+    char *pb = b;
+    for (int i = 0; i < size; ++i) {
+        char t = *pa;
+        *pa = *pb;
+        *pb = t;
+        pa++;
+        pb++;
+    }
+}
+
 #endif //INC_1_MATRIX_H
