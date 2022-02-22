@@ -11,6 +11,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <assert.h>
+#include <malloc.h>
 
 typedef struct matrix {
     int **values; // элементы матрицы

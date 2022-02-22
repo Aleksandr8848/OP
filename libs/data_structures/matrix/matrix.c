@@ -101,10 +101,8 @@ bool twoMatricesEqual(matrix m1, matrix m2) {
         return false;
 
     for (int i = 0; i < m1.nRows; ++i) {
-        for (int j = 0; j < m1.nCols; ++j) {
-            if (m1.values[i][j] != m2.values[i][j])
-                return false;
-        }
+        if (memcmp(m1.values[i], m2.values[i], sizeof(int) * m1.nCols) != 0)
+            return false;
     }
     return true;
 }
@@ -146,7 +144,17 @@ void transposeSquareMatrix(matrix m) {
             universalSwap(&m.values[i][j], &m.values[j][i], sizeof(int));
     }
 }
-
+// TODO: жесть блин
+/*void transposeMatrix(matrix *m) {
+    if(isSquareMatrix(*m))
+        transposeSquareMatrix(*m);
+    matrix mTranspose = getMemMatrix(m->nCols,m->nRows);
+    for (int i = 0; i < m->nRows; ++i) {
+        for (int j = 0; j < i; ++j)
+            universalSwap(&m.values[i][j], &m.values[j][i], sizeof(int));
+    }
+}
+ */
 position getMinValuePos(matrix m) {
     position minValuePos = {0, 0};
     for (int i = 0; i < m.nRows; ++i) {
@@ -236,10 +244,10 @@ void insertionSortColsMatrixByColCriteria(matrix m, int (*criteria)(int *, int))
     }
 }
 
-matrix mulMatrices(matrix m1, matrix m2){
+matrix mulMatrices(matrix m1, matrix m2) {
     assert(m1.nCols == m2.nRows);
 
-    matrix resMatrix = getMemMatrix(m1.nRows,m2.nCols);
+    matrix resMatrix = getMemMatrix(m1.nRows, m2.nCols);
     for (int i = 0; i < m1.nRows; ++i) {
         for (int j = 0; j < m2.nCols; ++j) {
             resMatrix.values[i][j] = 0;

@@ -1,5 +1,4 @@
-#include <stdio.h>
-#include <stdint.h>
+
 #include <stdlib.h>
 #include <string.h>
 #include "libs/data_structures/matrix/matrix.h"
@@ -108,9 +107,7 @@ int max2(const int a, const int b) {
 int getMaxValueOnDiagonal(matrix m, int rowsIndex, int colsIndex) {
     int maxValue = m.values[rowsIndex][colsIndex];
     while (rowsIndex < m.nRows && colsIndex < m.nCols) {
-        maxValue = max2(maxValue, m.values[rowsIndex][colsIndex]);
-        rowsIndex++;
-        colsIndex++;
+        maxValue = max2(maxValue, m.values[rowsIndex++][colsIndex++]);
     }
     return maxValue;
 }
@@ -122,6 +119,28 @@ long long findSumOfMaxesOfPseudoDiagonal(matrix m) {
     for (int j = 1; j < m.nCols; ++j)
         sumMaxElementsOfPseudoDiagonal += getMaxValueOnDiagonal(m, 0, j);
     return sumMaxElementsOfPseudoDiagonal;
+}
+
+// task 8
+
+// возвращает минимальное значение из двух целочисленных переменных типа int.
+int min2(const int a, const int b) {
+    return a > b ? b : a;
+}
+
+int getMinInArea(matrix m) {
+    position minPos = getMaxValuePos(m);
+    int minElement = m.values[minPos.rowIndex][minPos.colIndex];
+    int right = minPos.colIndex;
+    int left = minPos.colIndex;
+
+    for (int i = minPos.rowIndex - 1; i >= 0; ++i) {
+        right = right > m.nCols ? right : right + 1;
+        left = left > 0 ? left - 1 : left;
+
+        minElement = min2(getMin(&m.values[i][left],right-left),minElement);
+    }
+    return minElement;
 }
 
 // tests
@@ -333,6 +352,29 @@ void test_findSumOfMaxesOfPseudoDiagonal() {
     freeMemMatrix(m);
 }
 
+void test_getMinInArea(){
+    matrix m = createMatrixFromArray((int[]) {3, 2, 5, 4,
+                                              1, 3, 6, 3,
+                                              3, 2, 1, 2}, 3, 4);
+    assert(getMinInArea(m) == 2);
+    freeMemMatrix(m);
+}
+
+void test_getMinInArea2(){
+    matrix m = createMatrixFromArray((int[]) {10, 7, 5, 6,
+                                              3, 11, 8, 9,
+                                              3, 2, 12, 2}, 3, 4);
+    assert(getMinInArea(m) == 5);
+    freeMemMatrix(m);
+}
+
+void test_getMinInArea3(){
+    matrix m = createMatrixFromArray((int[]) {10, 17, 5, 6,
+                                              3, 11, 8, 9,
+                                              3, 2, 12, 2}, 3, 4);
+    assert(getMinInArea(m) == 17);
+    freeMemMatrix(m);
+}
 void test() {
     test_swapRowsWithMaxAndMinElements;
     test_sortRowsByMinElement;
@@ -347,6 +389,9 @@ void test() {
     test_isMutuallyInverseMatrices_matrixProduceIsEMatrix;
     test_isMutuallyInverseMatrices_matrixProduceIsNotEMatrix;
     test_findSumOfMaxesOfPseudoDiagonal;
+    test_getMinInArea;
+    test_getMinInArea2;
+    test_getMinInArea3;
 }
 
 int main() {

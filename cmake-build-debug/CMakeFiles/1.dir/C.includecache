@@ -6,10 +6,6 @@
 
 #IncludeRegexTransform: 
 
-C:/Users/Admin/CLionProjects/1/libs/data_structures/matrix/matrix.c
-matrix.h
-C:/Users/Admin/CLionProjects/1/libs/data_structures/matrix/matrix.h
-
 C:/Users/Admin/CLionProjects/1/libs/data_structures/matrix/matrix.h
 stdint.h
 -
@@ -23,12 +19,10 @@ stdio.h
 -
 assert.h
 -
+malloc.h
+-
 
 C:/Users/Admin/CLionProjects/1/main.c
-stdio.h
--
-stdint.h
--
 stdlib.h
 -
 string.h
