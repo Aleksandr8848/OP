@@ -335,6 +335,32 @@ void printMatrixWithMimNorm(matrix *ms, int nMatrix) {
     free(normMatrix);
 }
 
+// task 18
+
+long long getScalarProductRowAndCol(matrix m, int i, int j) {
+    assert(m.nRows == m.nCols);
+    int *col = (int *) malloc(sizeof(int) * m.nRows);
+
+    for (int k = 0; k < m.nRows; ++k)
+        col[k] = m.values[k][j];
+
+    int resScalarProduct = 0;
+
+    for (int k = 0; k < m.nCols; ++k)
+        resScalarProduct += col[k] * m.values[i][k];
+
+    free(col);
+
+    return resScalarProduct;
+}
+
+long long getSpecialScalarProduct(matrix m) {
+    position maxPosRow = getMaxValuePos(m);
+    position minPosCol = getMinValuePos(m);
+
+    return getScalarProductRowAndCol(m, maxPosRow.rowIndex, minPosCol.colIndex);
+}
+
 // tests
 void test_swapRows() {
     matrix m1 = createMatrixFromArray((int[]) {1, 4, 5,
@@ -974,7 +1000,8 @@ void test_countZeroRows() {
 
     freeMemMatrix(m);
 }
-void test_getMatrixNorm1(){
+
+void test_getMatrixNorm1() {
     matrix m = createMatrixFromArray((int[]) {
             4, -7, 1,
             3, -1, 2,
@@ -984,10 +1011,11 @@ void test_getMatrixNorm1(){
 
     freeMemMatrix(m);
 }
+
 void test_getMatrixNorm_oneRow() {
     matrix m = createMatrixFromArray((int[]) {-2,
                                               0,
-                                              1},3, 1);
+                                              1}, 3, 1);
 
     assert(getMatrixNorm(m) == 2);
 
@@ -995,17 +1023,31 @@ void test_getMatrixNorm_oneRow() {
 }
 
 void test_getMatrixNorm_oneCol() {
-    matrix m = createMatrixFromArray((int[]) {1, 0, -2},1, 3);
+    matrix m = createMatrixFromArray((int[]) {1, 0, -2}, 1, 3);
 
     assert(getMatrixNorm(m) == 2);
 
     freeMemMatrix(m);
 }
-void test_getMatrixNorm(){
+
+void test_getMatrixNorm() {
     test_getMatrixNorm1;
     test_getMatrixNorm_oneRow;
     test_getMatrixNorm_oneCol;
 }
+
+void test_getSpecialScalarProduct() {
+    matrix m = createMatrixFromArray((int[]) {
+            4, 3, 2,
+            8, 1, 2,
+            7, 6, 5
+    }, 3, 3);
+
+    assert(getSpecialScalarProduct(m) == 27);
+
+    freeMemMatrix(m);
+}
+
 void test() {
     test_part1;
     test_swapRowsOrCols;
@@ -1023,29 +1065,11 @@ void test() {
     test_countNonDescendingRowsMatrices;
     test_countZeroRows;
     test_getMatrixNorm;
+    test_getSpecialScalarProduct;
 }
 
 int main() {
     test();
-    matrix *ms = createArrayOfMatrixFromArray((int[]) {7, 1,
-                                                       1, 1,
-                                                       0, 0,
 
-                                                       0, 0,
-                                                       2, 2,
-                                                       1, 1,
-
-                                                       5, 4,
-                                                       2, 3,
-                                                       1, 1,
-
-                                                       1, 3,
-                                                       7, 9,
-                                                       0, 0}, 4, 3, 2);
-
-    printMatrixWithMaxZeroRows(ms, 4);
-    printMatrixWithMimNorm(ms,4);
-
-    freeMemMatrices(ms, 4);
     return 0;
 }
