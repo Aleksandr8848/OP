@@ -249,7 +249,7 @@ void swapPenultimateRow(matrix m) {
 }
 
 // task 13
-bool isNonDescendingSorted(const int *a, int n){
+bool isNonDescendingSorted(const int *a, int n) {
     for (int i = 0; i < n - 1; ++i)
         if (a[i] > a[i + 1]) {
             return false;
@@ -265,7 +265,7 @@ bool hasAllNonDescendingRows(matrix m) {
     return true;
 }
 
-int countNonDescendingRowsMatrices(matrix *ms, int nMatrix){
+int countNonDescendingRowsMatrices(matrix *ms, int nMatrix) {
     int count = 0;
     for (int i = 0; i < nMatrix; ++i) {
         if (hasAllNonDescendingRows(ms[i]))
@@ -275,7 +275,7 @@ int countNonDescendingRowsMatrices(matrix *ms, int nMatrix){
 }
 
 // task 14
-int countValues(const int *a, int n, int value){
+int countValues(const int *a, int n, int value) {
     int countValues = 0;
     for (int i = 0; i < n; ++i) {
         if (a[i] == value)
@@ -284,16 +284,16 @@ int countValues(const int *a, int n, int value){
     return countValues;
 }
 
-int countZeroRows(matrix m){
+int countZeroRows(matrix m) {
     int countZeroRows = 0;
     for (int i = 0; i < m.nRows; ++i) {
-        if(countValues(m.values[i],m.nCols,0)==m.nCols)
+        if (countValues(m.values[i], m.nCols, 0) == m.nCols)
             countZeroRows++;
     }
     return countZeroRows;
 }
 
-void printMatrixWithMaxZeroRows(matrix *ms, int nMatrix){
+void printMatrixWithMaxZeroRows(matrix *ms, int nMatrix) {
     int *msZeroRows = (int *) malloc(sizeof(int) * nMatrix);
     int zeroRowsMaxCount = 0;
 
@@ -302,10 +302,37 @@ void printMatrixWithMaxZeroRows(matrix *ms, int nMatrix){
         zeroRowsMaxCount = max2(zeroRowsMaxCount, msZeroRows[i]);
     }
     for (int i = 0; i < nMatrix; ++i) {
-        if(msZeroRows[i] == zeroRowsMaxCount)
+        if (msZeroRows[i] == zeroRowsMaxCount)
             outputMatrix(ms[i]);
     }
     free(msZeroRows);
+}
+
+// task 15
+int getMatrixNorm(matrix m) {
+    int norm = abs(m.values[0][0]);
+    for (int i = 0; i < m.nRows; ++i) {
+        for (int j = 0; j < m.nCols; ++j) {
+            if (abs(m.values[i][j]) > norm)
+                norm = abs(m.values[i][j]);
+        }
+    }
+    return norm;
+}
+
+void printMatrixWithMimNorm(matrix *ms, int nMatrix) {
+    int *normMatrix = (int *) malloc(sizeof(int) * nMatrix);
+
+    for (int i = 0; i < nMatrix; ++i)
+        normMatrix[i] = getMatrixNorm(ms[i]);
+
+    int minNorm = getMin(normMatrix, nMatrix);
+
+    for (int i = 0; i < nMatrix; ++i) {
+        if (normMatrix[i] == minNorm)
+            outputMatrix(ms[i]);
+    }
+    free(normMatrix);
 }
 
 // tests
@@ -821,7 +848,7 @@ void test_getSpecialElements() {
     freeMemMatrix(m);
 }
 
-void test_swapPenultimateRow(){
+void test_swapPenultimateRow() {
     matrix m = createMatrixFromArray((int[]) {
             4, 7, 1,
             3, 1, 2,
@@ -836,11 +863,12 @@ void test_swapPenultimateRow(){
             5, 2, 3
     }, 3, 3);
 
-    assert(twoMatricesEqual(m,x));
+    assert(twoMatricesEqual(m, x));
 
     freeMemMatrix(m);
     freeMemMatrix(x);
 }
+
 void test_countNonDescendingRowsMatrices_squareMatrixHasSuitableMatrix() {
     matrix *ms = createArrayOfMatrixFromArray((int[]) {7, 1,
                                                        1, 1,
@@ -934,7 +962,8 @@ void test_countNonDescendingRowsMatrices() {
     test_countNonDescendingRowsMatrices_oneCol();
     test_countNonDescendingRowsMatrices_oneElem();
 }
-void test_countZeroRows(){
+
+void test_countZeroRows() {
     matrix m = createMatrixFromArray((int[]) {
             4, 7, 0,
             0, 1, 2,
@@ -944,6 +973,38 @@ void test_countZeroRows(){
     assert(countZeroRows(m) == 1);
 
     freeMemMatrix(m);
+}
+void test_getMatrixNorm1(){
+    matrix m = createMatrixFromArray((int[]) {
+            4, -7, 1,
+            3, -1, 2,
+            5, -2, 3
+    }, 3, 3);
+    assert(getMatrixNorm(m) == 7);
+
+    freeMemMatrix(m);
+}
+void test_getMatrixNorm_oneRow() {
+    matrix m = createMatrixFromArray((int[]) {-2,
+                                              0,
+                                              1},3, 1);
+
+    assert(getMatrixNorm(m) == 2);
+
+    freeMemMatrix(m);
+}
+
+void test_getMatrixNorm_oneCol() {
+    matrix m = createMatrixFromArray((int[]) {1, 0, -2},1, 3);
+
+    assert(getMatrixNorm(m) == 2);
+
+    freeMemMatrix(m);
+}
+void test_getMatrixNorm(){
+    test_getMatrixNorm1;
+    test_getMatrixNorm_oneRow;
+    test_getMatrixNorm_oneCol;
 }
 void test() {
     test_part1;
@@ -961,6 +1022,7 @@ void test() {
     test_swapPenultimateRow;
     test_countNonDescendingRowsMatrices;
     test_countZeroRows;
+    test_getMatrixNorm;
 }
 
 int main() {
@@ -981,8 +1043,9 @@ int main() {
                                                        7, 9,
                                                        0, 0}, 4, 3, 2);
 
-    printMatrixWithMaxZeroRows(ms,4);
+    printMatrixWithMaxZeroRows(ms, 4);
+    printMatrixWithMimNorm(ms,4);
 
-    freeMemMatrices(ms,4);
+    freeMemMatrices(ms, 4);
     return 0;
 }
