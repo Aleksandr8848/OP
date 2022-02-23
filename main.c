@@ -273,6 +273,41 @@ int countNonDescendingRowsMatrices(matrix *ms, int nMatrix){
     }
     return count;
 }
+
+// task 14
+int countValues(const int *a, int n, int value){
+    int countValues = 0;
+    for (int i = 0; i < n; ++i) {
+        if (a[i] == value)
+            countValues++;
+    }
+    return countValues;
+}
+
+int countZeroRows(matrix m){
+    int countZeroRows = 0;
+    for (int i = 0; i < m.nRows; ++i) {
+        if(countValues(m.values[i],m.nCols,0)==m.nCols)
+            countZeroRows++;
+    }
+    return countZeroRows;
+}
+
+void printMatrixWithMaxZeroRows(matrix *ms, int nMatrix){
+    int *msZeroRows = (int *) malloc(sizeof(int) * nMatrix);
+    int zeroRowsMaxCount = 0;
+
+    for (int i = 0; i < nMatrix; ++i) {
+        msZeroRows[i] = countZeroRows(ms[i]);
+        zeroRowsMaxCount = max2(zeroRowsMaxCount, msZeroRows[i]);
+    }
+    for (int i = 0; i < nMatrix; ++i) {
+        if(msZeroRows[i] == zeroRowsMaxCount)
+            outputMatrix(ms[i]);
+    }
+    free(msZeroRows);
+}
+
 // tests
 void test_swapRows() {
     matrix m1 = createMatrixFromArray((int[]) {1, 4, 5,
@@ -899,7 +934,17 @@ void test_countNonDescendingRowsMatrices() {
     test_countNonDescendingRowsMatrices_oneCol();
     test_countNonDescendingRowsMatrices_oneElem();
 }
+void test_countZeroRows(){
+    matrix m = createMatrixFromArray((int[]) {
+            4, 7, 0,
+            0, 1, 2,
+            0, 0, 0
+    }, 3, 3);
 
+    assert(countZeroRows(m) == 1);
+
+    freeMemMatrix(m);
+}
 void test() {
     test_part1;
     test_swapRowsOrCols;
@@ -915,9 +960,29 @@ void test() {
     test_getSpecialElements;
     test_swapPenultimateRow;
     test_countNonDescendingRowsMatrices;
+    test_countZeroRows;
 }
 
 int main() {
     test();
+    matrix *ms = createArrayOfMatrixFromArray((int[]) {7, 1,
+                                                       1, 1,
+                                                       0, 0,
+
+                                                       0, 0,
+                                                       2, 2,
+                                                       1, 1,
+
+                                                       5, 4,
+                                                       2, 3,
+                                                       1, 1,
+
+                                                       1, 3,
+                                                       7, 9,
+                                                       0, 0}, 4, 3, 2);
+
+    printMatrixWithMaxZeroRows(ms,4);
+
+    freeMemMatrices(ms,4);
     return 0;
 }
